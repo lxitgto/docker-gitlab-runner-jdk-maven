@@ -1,0 +1,57 @@
+#!/bin/bash
+set -e
+
+# take ownership of /home/git/data
+chown gitlab_ci_runner:gitlab_ci_runner /home/gitlab_ci_runner/data
+
+cd /home/gitlab_ci_runner/gitlab-ci-runner/
+
+appStart () {
+	# start supervisord
+	/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+
+	echo "Starting gitlab-ci-runner..."
+
+	sudo -u gitlab_ci_runner -H ln -sf /home/gitlab_ci_runner/data/config.yml config.yml
+	exec bundle exec ./bin/runner
+}
+
+appSetup () {
+	sudo -u gitlab_ci_runner -H bundle exec ./bin/setup
+	sudo -u gitlab_ci_runner -H mv config.yml /home/gitlab_ci_runner/data/config.yml
+}
+
+appHelp () {
+	echo "Available options:"
+	echo " app:start          - Starts the gitlab-ci server (default)"
+	echo " app:setup          - Setup the runner."
+	echo " app:help           - Displays the help"
+	echo " [command]          - Execute the specified linux command eg. bash."
+}
+
+case "$1" in
+	app:start)
+		appStart
+		;;
+	app:setup)
+		appSetup
+		;;
+	app:help)
+		appHelp
+		;;
+	*)
+		if [ -x $1 ]; then
+			$1
+		else
+			prog=$(which $1)
+			if [ -n "${prog}" ] ; then
+				shift 1
+				$prog $@
+			else
+				appHelp
+			fi
+		fi
+		;;
+esac
+
+exit 0
