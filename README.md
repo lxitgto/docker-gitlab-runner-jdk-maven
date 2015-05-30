@@ -15,8 +15,8 @@ Alternately you can build the image yourself.
 
 ```bash
 git clone https://github.com/lxitgto/docker-gitlab-runner-jdk7-maven.git
-cd docker-gitlab-runner-jdk-maven
-docker build --tag="$USER/gitlab-runner-jdk-maven" .
+cd docker-gitlab-runner-jdk7-maven
+docker build --tag="$USER/gitlab-runner-jdk7-maven" .
 ```
 # Quick Start
 For a runner to do its trick, it has to first be registered/authorized on the GitLab CI server. This can be done by running the image with the **app:setup** command.
