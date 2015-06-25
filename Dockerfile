@@ -10,7 +10,7 @@ RUN \
   apt-get install -y software-properties-common && \
   add-apt-repository -y ppa:webupd8team/java && \
   apt-get update && \
-  apt-get install -y oracle-java7-installer
+  apt-get install -y oracle-java8-installer
 
 # Install maven and git.
 RUN apt-get install -y maven git
