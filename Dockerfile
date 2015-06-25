@@ -8,7 +8,7 @@ RUN \
   apt-get update && \
   wget https://zeroc.com/download/Ice/3.5/ubuntu/ice3.5-trusty.list -O /etc/apt/sources.list.d/ice3.5-trusty.list && \
   apt-get update && \
-  apt-get install -y ice
+  apt-get install -y ice icebox/trusty-zeroc icegrid/trusty-zeroc
 
 # Use the customize init file.
 ADD assets/init /app/init
