@@ -1,20 +1,14 @@
 FROM sameersbn/gitlab-ci-runner:latest
 MAINTAINER ethan-liu@outlook.com
 
-# Install Java.
+# Install Ice 3.5.1
 RUN \
-  echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections && \
+  wget https://zeroc.com/download/RPM-GPG-KEY-zeroc-release && \
+  apt-key add RPM-GPG-KEY-zeroc-release && \
   apt-get update && \
-  apt-get install -y python-software-properties && \
-  apt-get install -y software-properties-common && \
-  add-apt-repository -y ppa:webupd8team/java && \
+  wget https://zeroc.com/download/Ice/3.5/ubuntu/ice3.5-trusty.list -O /etc/apt/sources.list.d/ice3.5-trusty.list && \
   apt-get update && \
-  apt-get install -y oracle-java7-installer
-
-# Install maven and git.
-RUN apt-get install -y maven git
-RUN apt-get clean
+  apt-get install -y ice icebox/trusty-zeroc icegrid/trusty-zeroc && \
 
 # Use the customize init file.
 ADD assets/init /app/init
